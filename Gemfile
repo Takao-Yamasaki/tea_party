@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.1.1'
 
-gem 'rails', '6.1.6.1'
+gem 'rails', '7.0.3.1'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.1'
 gem 'sass-rails', '>= 6'
@@ -20,7 +20,7 @@ gem 'ransack'
 #ログイン機能
 gem 'devise'
 #多言語対応
-gem 'rails-i18n', '~> 6.0'
+gem 'rails-i18n'
 gem 'devise-i18n'
 # 画像投稿機能
 gem 'carrierwave', '~> 2.0'
