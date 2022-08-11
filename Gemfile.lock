@@ -372,6 +372,7 @@ DEPENDENCIES
   selenium-webdriver
   spring
   spring-watcher-listen
+  sprockets-rails
   tzinfo-data
   web-console
   webdrivers
