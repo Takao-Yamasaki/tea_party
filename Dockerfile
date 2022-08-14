@@ -10,8 +10,9 @@ echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.lis
 RUN apt-get update -qq && apt-get install -y nodejs build-essential libpq-dev postgresql-client yarn
 
 WORKDIR /tea_party
-COPY Gemfile Gemfile.lock /tea_party/
-RUN bundle install
+COPY . /tea_party
+RUN bundle config --local set path 'vendor/bundle' \
+  && bundle install
 
 RUN yarn install
 RUN bundle exec rails webpacker:install
