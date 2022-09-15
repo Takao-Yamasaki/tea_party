@@ -85,5 +85,5 @@ test:
 production:
   <<: *default
   database: teaparty_production
-  username: <%= ENV['DB_HOST'] %>
+  host: <%= ENV['DB_HOST'] %>
   password: <%= ENV['DB_PASSWORD'] %>
