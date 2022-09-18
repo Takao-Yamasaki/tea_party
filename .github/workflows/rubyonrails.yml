@@ -48,11 +48,10 @@ jobs:
         if: steps.cache-gems.outputs.cache-hit != 'true'
         run: |
           bundle install --jobs 4 --retry 3
-      - name: setup DB
+      - name: setup db schema
         env:
           RAILS_ENV: 'test'
           DATABASE_URL: 'postgres://postgres@localhost:5432/teaparty_test'
-      - name: setup db schema
         run: |
           bundle exec rails db:create db:schema:load --trace
       - name: run spec
