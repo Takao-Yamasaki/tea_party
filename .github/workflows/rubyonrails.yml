@@ -7,10 +7,10 @@ jobs:
     services:
       db:
         image: postgres:12
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: teaparty_test
+        # env:
+        #   POSTGRES_USER: postgres
+        #   POSTGRES_PASSWORD: password
+        #   POSTGRES_DB: teaparty_test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -22,9 +22,10 @@ jobs:
       image: ruby:3.1.1
     env:
       RAILS_ENV: test
-      POSTGRES_HOST: postgres
-      RAILS_DATABASE_USER: postgres
-      RAILS_DATABASE_PASSWORD: password
+      DATABASE_URL: "postgres://postgres@localhost:5432/teaparty_test"
+      # POSTGRES_HOST: postgres
+      # RAILS_DATABASE_USER: postgres
+      # RAILS_DATABASE_PASSWORD: password
     steps:
       - uses: actions/checkout@v3
       - name: Install chrome
