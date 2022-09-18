@@ -7,10 +7,10 @@ jobs:
     services:
       db:
         image: postgres:12
-        # env:
-        #   POSTGRES_USER: postgres
-        #   POSTGRES_PASSWORD: password
-        #   POSTGRES_DB: teaparty_test
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: teaparty_test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
