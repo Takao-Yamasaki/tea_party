@@ -49,9 +49,9 @@ jobs:
         run: |
           bundle install --jobs 4 --retry 3
       - name: setup db schema
-        env:
-          RAILS_ENV: 'test'
-          DATABASE_URL: 'postgres://postgres@localhost:5432/teaparty_test'
+        # env:
+        #   RAILS_ENV: 'test'
+        #   DATABASE_URL: 'postgres://postgres@localhost:5432/teaparty_test'
         run: |
           bundle exec rails db:create db:schema:load --trace
       - name: run spec
