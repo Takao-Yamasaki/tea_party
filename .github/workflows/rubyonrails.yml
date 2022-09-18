@@ -23,9 +23,6 @@ jobs:
     env:
       RAILS_ENV: 'test'
       POSTGRES_PASSWORD: password
-    #   DATABASE_URL: "postgres://postgres:postgres@localhost:5432/teaparty_test"
-      # POSTGRES_HOST: postgres
-      # RAILS_DATABASE_USER: postgres
     steps:
       - uses: actions/checkout@v3
       - name: Install chrome
@@ -49,9 +46,6 @@ jobs:
         run: |
           bundle install --jobs 4 --retry 3
       - name: setup db schema
-        # env:
-        #   RAILS_ENV: 'test'
-        #   DATABASE_URL: 'postgres://postgres@localhost:5432/teaparty_test'
         run: |
           bundle exec rails db:create db:schema:load --trace
       - name: run spec
