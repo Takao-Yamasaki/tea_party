@@ -26,13 +26,4 @@ ENTRYPOINT ["entrypoint.sh"]
 # コンテナがリッスンするポート番号を指定
 EXPOSE 3000
 
-RUN mkdir -p tmp/sockets
-RUN mkdir -p tmp/pids
-
-# nginxコンテナからrailsコンテナのsockファイル見えるようにする
-VOLUME /tea_party/public
-VOLUME /tea_party/tmp
-
-# railsサーバーを起動
-# CMD ["rails", "server", "-b", "0.0.0.0"]
 CMD /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec puma -C config/puma.rb"
