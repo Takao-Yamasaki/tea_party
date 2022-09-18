@@ -20,9 +20,9 @@ jobs:
           - 5432:5432
     container:
       image: ruby:3.1.1
-    env:
-      RAILS_ENV: test
-      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/teaparty_test"
+    # env:
+    #   RAILS_ENV: test
+    #   DATABASE_URL: "postgres://postgres:postgres@localhost:5432/teaparty_test"
       # POSTGRES_HOST: postgres
       # RAILS_DATABASE_USER: postgres
       # RAILS_DATABASE_PASSWORD: password
@@ -48,6 +48,10 @@ jobs:
         if: steps.cache-gems.outputs.cache-hit != 'true'
         run: |
           bundle install --jobs 4 --retry 3
+      - name: setup DB
+        run: |
+          echo '::set-env name=RAILS_ENV::test'
+          echo '::set-env name=DATABASE_URL::postgres://postgres:postgres@localhost:5432/teaparty_test'
       - name: setup db schema
         run: |
           bundle exec rails db:create db:schema:load --trace
