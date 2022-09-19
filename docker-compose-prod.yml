@@ -4,9 +4,9 @@ volumes:
   db-data:
 
 services:
-  web:
+  rails:
     build:
-      context: . 
+      context: .
       dockerfile: 'Dockerfile.prod'
     ports:
       - '3000:3000'
@@ -27,3 +27,12 @@ services:
       - 'db-data:/var/lib/postgresql/data'
     environment:
       - 'POSTGRES_PASSWORD=postgres'
+
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile.nginx
+    ports:
+      - '80:80'
+    depends_on:
+      - rails
