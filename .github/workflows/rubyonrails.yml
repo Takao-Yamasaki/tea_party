@@ -3,6 +3,8 @@ on: [push]
 jobs:
   rspec:
     runs-on: ubuntu-latest
+    outputs:
+      done: ${{ steps.check.outputs.message }}
 
     services:
       db:
@@ -64,6 +66,8 @@ jobs:
 
   rubocop:
     runs-on: ubuntu-latest
+    outputs:
+      done: ${{ steps.check.outputs.message }}
     container:
       image: ruby:3.1.1
     steps:
