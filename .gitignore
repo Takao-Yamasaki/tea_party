@@ -29,3 +29,5 @@ yarn-debug.log*
 
 /.env
 GOOGLEMAP=AIzaSyAeO6xn5fNT67yK0PGW_emEonxmpdeiYf8
+
+/task-definition.json

@@ -1,5 +1,10 @@
 name: Test
-on: [push]
+on:
+  push:
+    # デプロイ用のWorkflowから、テスト用のWorkflowを呼び出す
+    branches-ignore:
+      - "master/**"
+    workflow_call:
 jobs:
   rspec:
     runs-on: ubuntu-latest
