@@ -19,7 +19,7 @@ jobs:
   test:
     uses: ./.github/workflows/test.yml
   deploy:
-    needs: [Test]
+    needs: [RSpec, RuboCop]
     name: Deploy
     runs-on: ubuntu-latest
     environment: production
