@@ -16,10 +16,10 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  Test:
     uses: ./.github/workflows/test.yml
-  deploy:
-    needs: [RSpec, RuboCop]
+  Deploy:
+    needs: [Test]
     name: Deploy
     runs-on: ubuntu-latest
     environment: production
