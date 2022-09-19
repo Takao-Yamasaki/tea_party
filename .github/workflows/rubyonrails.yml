@@ -98,10 +98,10 @@ jobs:
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         SLACK_USERNAME: GitHub Actions
-        SLACK_TITLE: '[Success]Workflow #${{github.run_number}} :rocket:'
+        SLACK_TITLE: 'Success to Deploy to GitHub Pages :rocket:'
         SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
         SLACK_COLOR: '#5cb85c'
-        SLACK_MESSAGE: '${{ needs.RSpec.outputs.done }} ${{ needs.RuboCop.outputs.done }} \n :closed_book: ${{ github.repository }}'
+        SLACK_MESSAGE: '${{ needs.RSpec.outputs.done }} ${{ needs.RuboCop.outputs.done }}'
   
   # 上記までの処理のいずれかが失敗した場合、以下のSlack通知処理が実行される
   Notify_failure:
@@ -114,8 +114,8 @@ jobs:
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         SLACK_USERNAME: GitHub Actions
-        SLACK_TITLE: '[Failure]Workflow #${{github.run_number}} :boom:'
+        SLACK_TITLE: 'Failure to Deploy to GitHub Pages :boom:'
         SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
         SLACK_COLOR: '#dc143c'
-        SLACK_MESSAGE: '${{ needs.RSpec.outputs.done }} ${{ needs.RuboCop.outputs.done }} \n :closed_book: ${{ github.repository }}'
+        SLACK_MESSAGE: '${{ needs.RSpec.outputs.done }} ${{ needs.RuboCop.outputs.done }}'
 
