@@ -59,7 +59,7 @@ jobs:
             tmp/screenshots/
             tmp/capybara/
       - id: check
-        if: ${{ always }}
+        if: ${{ always() }}
         run: echo "::set-output name=message::RSpec ${{ (job.status == 'success' && '✅') || '❌' }}"
 
   rubocop:
@@ -84,7 +84,7 @@ jobs:
       - name: run rubocop
         run: bundle exec rubocop
       - id: check
-        if: ${{ always }}
+        if: ${{ always() }}
         run: echo "::set-output name=message::RuboCop ${{ (job.status == 'success' && '✅') || '❌' }}"
 
   # 上記までの処理が成功した場合、以下のSlack通知処理が実行される
