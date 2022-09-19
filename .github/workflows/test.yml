@@ -96,35 +96,35 @@ jobs:
         if: ${{ always() }}
         run: echo "::set-output name=message::RuboCop ${{ (job.status == 'success' && '✅') || '❌' }}"
 
-  # 上記までの処理が成功した場合、以下のSlack通知処理が実行される
-  Notify_succeed:
-    if: success()
-    runs-on: ubuntu-latest
-    needs: [RSpec, RuboCop]
-    steps:
-    - name: Slack Notification Success
-      uses: rtCamp/action-slack-notify@v2.0.0
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_USERNAME: GitHub Actions
-        SLACK_TITLE: 'Success to Deploy to GitHub Pages :rocket:'
-        SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-        SLACK_COLOR: '#5cb85c'
-        SLACK_MESSAGE: '${{ needs.RSpec.outputs.done }} ${{ needs.RuboCop.outputs.done }}'
+  # # 上記までの処理が成功した場合、以下のSlack通知処理が実行される
+  # Notify_succeed:
+  #   if: success()
+  #   runs-on: ubuntu-latest
+  #   needs: [RSpec, RuboCop]
+  #   steps:
+  #   - name: Slack Notification Success
+  #     uses: rtCamp/action-slack-notify@v2.0.0
+  #     env:
+  #       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  #       SLACK_USERNAME: GitHub Actions
+  #       SLACK_TITLE: 'Success to Deploy to GitHub Pages :rocket:'
+  #       SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+  #       SLACK_COLOR: '#5cb85c'
+  #       SLACK_MESSAGE: '${{ needs.RSpec.outputs.done }} ${{ needs.RuboCop.outputs.done }}'
   
-  # 上記までの処理のいずれかが失敗した場合、以下のSlack通知処理が実行される
-  Notify_failure:
-    if: failure()
-    runs-on: ubuntu-latest
-    needs: [RSpec, RuboCop]
-    steps:
-    - name: Slack Notification Failure
-      uses: rtCamp/action-slack-notify@v2.0.0
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_USERNAME: GitHub Actions
-        SLACK_TITLE: 'Failure to Deploy to GitHub Pages :boom:'
-        SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-        SLACK_COLOR: '#dc143c'
-        SLACK_MESSAGE: '${{ needs.RSpec.outputs.done }} ${{ needs.RuboCop.outputs.done }}'
+  # # 上記までの処理のいずれかが失敗した場合、以下のSlack通知処理が実行される
+  # Notify_failure:
+  #   if: failure()
+  #   runs-on: ubuntu-latest
+  #   needs: [RSpec, RuboCop]
+  #   steps:
+  #   - name: Slack Notification Failure
+  #     uses: rtCamp/action-slack-notify@v2.0.0
+  #     env:
+  #       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  #       SLACK_USERNAME: GitHub Actions
+  #       SLACK_TITLE: 'Failure to Deploy to GitHub Pages :boom:'
+  #       SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+  #       SLACK_COLOR: '#dc143c'
+  #       SLACK_MESSAGE: '${{ needs.RSpec.outputs.done }} ${{ needs.RuboCop.outputs.done }}'
 
