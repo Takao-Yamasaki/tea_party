@@ -1,8 +1,10 @@
 name: Deploy to Amazon ECS
 
 on:
-  push:
-    branches: [ "master" ]
+  pull_request:
+    branches:
+      - master
+    types: [closed]
 
 env:
   AWS_REGION: ap-northeast-1
@@ -18,10 +20,19 @@ permissions:
 jobs:
   Test:
     uses: ./.github/workflows/test.yml
+    outputs:
+      done: ${{ steps.check.outputs.message }}
+    steps:
+    - id: check
+        if: ${{ always() }}
+        run: echo "::set-output name=message::Test ${{ (job.status == 'success' && '✅') || '❌' }}"
+  
   Deploy:
     needs: [Test]
     name: Deploy
     runs-on: ubuntu-latest
+    outputs:
+      done: ${{ steps.check.outputs.message }}
     environment: production
 
     steps:
@@ -49,17 +60,17 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
     
-    - name: Rewrite task-definition
+    - name: Rewrite the Amazon ECS task definition
       run: |
-        sed -i -e s/SED_ACCESS_KEY_ID/${{ secrets.ACCESS_KEY_ID }}/g ./task-definition.json
-        sed -i -e s/SED_AWS_SECRET_ACCESS_KEY/${{ secrets.AWS_SECRET_ACCESS_KEY }}/g ./task-definition.json
-        sed -i -e s/SED_DB_HOST/${{ secrets.DB_HOST }}/g ./task-definition.json
-        sed -i -e s/SED_DB_PASSWORD/${{ secrets.DB_PASSWORD }}/g ./task-definition.json
-        sed -i -e s/SED_GOOGLEMAP/${{ secrets.GOOGLEMAP }}/g ./task-definition.json
-        sed -i -e s/SED_RAILS_ENV/${{ secrets.RAILS_ENV }}/g ./task-definition.json
-        sed -i -e s/SED_RAILS_MASTER_KEY/${{ secrets.RAILS_MASTER_KEY }}/g ./task-definition.json
-        sed -i -e s/SED_SECRET_KEY_BASE/${{ secrets.SECRET_KEY_BASE }}/g ./task-definition.json
-        sed -i -e s/SED_TZ/${{ secrets.TZ }}/g ./task-definition.json
+        sed -i -e s|SED_ACCESS_KEY_ID|${{ secrets.ACCESS_KEY_ID }}|g ./task-definition.json
+        sed -i -e s|SED_AWS_SECRET_ACCESS_KEY|${{ secrets.AWS_SECRET_ACCESS_KEY }}|g ./task-definition.json
+        sed -i -e s|SED_DB_HOST|${{ secrets.DB_HOST }}|g ./task-definition.json
+        sed -i -e s|SED_DB_PASSWORD|${{ secrets.DB_PASSWORD }}|g ./task-definition.json
+        sed -i -e s|SED_GOOGLEMAP|${{ secrets.GOOGLEMAP }}|g ./task-definition.json
+        sed -i -e s|SED_RAILS_ENV|${{ secrets.RAILS_ENV }}|g ./task-definition.json
+        sed -i -e s|SED_RAILS_MASTER_KEY|${{ secrets.RAILS_MASTER_KEY }}|g ./task-definition.json
+        sed -i -e s|SED_SECRET_KEY_BASE|${{ secrets.SECRET_KEY_BASE }}|g ./task-definition.json
+        sed -i -e s|SED_TZ|${{ secrets.TZ }}|g ./task-definition.json
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
@@ -76,3 +87,54 @@ jobs:
         service: ${{ env.ECS_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
+    - id: check
+        if: ${{ always() }}
+        run: echo "::set-output name=message::Deploy ${{ (job.status == 'success' && '✅') || '❌' }}"
+
+  # 上記までの処理が成功した場合、以下のSlack通知処理が実行される
+  Notify_succeed:
+    if: success()
+    runs-on: ubuntu-latest
+    needs: [Test, Deploy]
+    steps:
+    - name: Slack Notification Success
+      uses: rtCamp/action-slack-notify@v2.0.0
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_USERNAME: GitHub Actions
+        SLACK_TITLE: 'Success to Deploy to ECS :rocket:'
+        SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+        SLACK_COLOR: '#5cb85c'
+        SLACK_MESSAGE: '${{ needs.Test.outputs.done }} ${{ needs.Deploy.outputs.done }}'
+  
+  # 上記までの処理のいずれかが失敗した場合、以下のSlack通知処理が実行される
+  Notify_failure:
+    if: failure()
+    runs-on: ubuntu-latest
+    needs: [Test, Deploy]
+    steps:
+    - name: Slack Notification Failure
+      uses: rtCamp/action-slack-notify@v2.0.0
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_USERNAME: GitHub Actions
+        SLACK_TITLE: 'Failure to Deploy to ECS :boom:'
+        SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+        SLACK_COLOR: '#dc143c'
+        SLACK_MESSAGE: '${{ needs.Test.outputs.done }} ${{ needs.Deploy.outputs.done }}'
+  
+  # 上記までの処理のいずれかが中止した場合、以下のSlack通知処理が実行される
+  Notify_failure:
+    if: cancelled()
+    runs-on: ubuntu-latest
+    needs: [Test, Deploy]
+    steps:
+    - name: Slack Notification Cancell
+      uses: rtCamp/action-slack-notify@v2.0.0
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_USERNAME: GitHub Actions
+        SLACK_TITLE: 'Cancell to Deploy to ECS :boom:'
+        SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+        SLACK_COLOR: '#dc143c'
+        SLACK_MESSAGE: '${{ needs.Test.outputs.done }} ${{ needs.Deploy.outputs.done }}'
