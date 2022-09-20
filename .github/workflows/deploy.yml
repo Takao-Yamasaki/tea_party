@@ -62,15 +62,15 @@ jobs:
     
     - name: Rewrite the Amazon ECS task definition
       run: |
-        sed -i -e s|SED_ACCESS_KEY_ID|${{ secrets.ACCESS_KEY_ID }}|g ./task-definition.json
-        sed -i -e s|SED_AWS_SECRET_ACCESS_KEY|${{ secrets.AWS_SECRET_ACCESS_KEY }}|g ./task-definition.json
-        sed -i -e s|SED_DB_HOST|${{ secrets.DB_HOST }}|g ./task-definition.json
-        sed -i -e s|SED_DB_PASSWORD|${{ secrets.DB_PASSWORD }}|g ./task-definition.json
-        sed -i -e s|SED_GOOGLEMAP|${{ secrets.GOOGLEMAP }}|g ./task-definition.json
-        sed -i -e s|SED_RAILS_ENV|${{ secrets.RAILS_ENV }}|g ./task-definition.json
-        sed -i -e s|SED_RAILS_MASTER_KEY|${{ secrets.RAILS_MASTER_KEY }}|g ./task-definition.json
-        sed -i -e s|SED_SECRET_KEY_BASE|${{ secrets.SECRET_KEY_BASE }}|g ./task-definition.json
-        sed -i -e s|SED_TZ|${{ secrets.TZ }}|g ./task-definition.json
+        sed -i -e "s|SED_ACCESS_KEY_ID|${{ secrets.ACCESS_KEY_ID }}|g" ./task-definition.json
+        sed -i -e "s|SED_AWS_SECRET_ACCESS_KEY|${{ secrets.AWS_SECRET_ACCESS_KEY }}|g" ./task-definition.json
+        sed -i -e "s|SED_DB_HOST|${{ secrets.DB_HOST }}|g" ./task-definition.json
+        sed -i -e "s|SED_DB_PASSWORD|${{ secrets.DB_PASSWORD }}|g" ./task-definition.json
+        sed -i -e "s|SED_GOOGLEMAP|${{ secrets.GOOGLEMAP }}|g" ./task-definition.json
+        sed -i -e "s|SED_RAILS_ENV|${{ secrets.RAILS_ENV }}|g" ./task-definition.json
+        sed -i -e "s|SED_RAILS_MASTER_KEY|${{ secrets.RAILS_MASTER_KEY }}|g" ./task-definition.json
+        sed -i -e "s|SED_SECRET_KEY_BASE|${{ secrets.SECRET_KEY_BASE }}|g" ./task-definition.json
+        sed -i -e "s|SED_TZ|${{ secrets.TZ }}|g" ./task-definition.json
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
