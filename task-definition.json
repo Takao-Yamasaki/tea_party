@@ -22,7 +22,11 @@
           "containerPort": 3000
         }
       ],
-      "command": null,
+      "command": [
+        "bash",
+        "-c",
+        "bundle exec rails db:migrate && bundle exec rails assets:precompile && bundle exec puma -C config/puma.rb"
+      ],
       "linuxParameters": null,
       "cpu": 0,
       "environment": [
@@ -63,7 +67,7 @@
       "ulimits": null,
       "dnsServers": null,
       "mountPoints": [],
-      "workingDirectory": null,
+      "workingDirectory": "/tea_party",
       "secrets": null,
       "dockerSecurityOptions": null,
       "memory": null,
@@ -109,11 +113,7 @@
           "containerPort": 80
         }
       ],
-      "command": [
-        "bash",
-        "-c",
-        "bundle exec rails db:migrate && bundle exec rails assets:precompile && bundle exec puma -C config/puma.rb"
-      ],
+      "command": null,
       "linuxParameters": null,
       "cpu": 0,
       "environment": [],
@@ -121,7 +121,7 @@
       "ulimits": null,
       "dnsServers": null,
       "mountPoints": [],
-      "workingDirectory": null,
+      "workingDirectory": "/tea_party",
       "secrets": null,
       "dockerSecurityOptions": null,
       "memory": null,
@@ -129,7 +129,7 @@
       "volumesFrom": [
         {
           "sourceContainer": "rails",
-          "readOnly": null
+          "readOnly": false
         }
       ],
       "stopTimeout": null,
@@ -156,68 +156,8 @@
   "placementConstraints": [],
   "memory": "512",
   "taskRoleArn": "arn:aws:iam::081733934465:role/ecsTaskExecutionRole",
-  "compatibilities": [
-    "EC2",
-    "FARGATE"
-  ],
-  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-1:081733934465:task-definition/tearip:27",
   "family": "tearip",
-  "requiresAttributes": [
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "ecs.capability.execution-role-awslogs"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.ecr-auth"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.task-iam-role"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "ecs.capability.execution-role-ecr-pull"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "ecs.capability.task-eni"
-    }
-  ],
+  
   "pidMode": null,
   "requiresCompatibilities": [
     "FARGATE"
@@ -228,8 +168,6 @@
     "cpuArchitecture": null
   },
   "cpu": "256",
-  "revision": 27,
-  "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,
   "volumes": []
