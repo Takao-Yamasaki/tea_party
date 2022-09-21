@@ -121,5 +121,8 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
   # herokuへのデプロイ
-  config.hosts << "tearip.herokuapp.com"
+  # config.hosts << "tearip.herokuapp.com"
+  
+  # ホワイトリストをクリア
+  config.hosts.clear
 end
