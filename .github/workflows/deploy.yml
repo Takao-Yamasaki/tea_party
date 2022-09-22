@@ -80,7 +80,8 @@ jobs:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
         service: ${{ env.ECS_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
+        # Github Actionsの実行時間が増大するため、安定稼働を待たず終了させる
+        wait-for-service-stability: false
 
   # 上記までの処理が成功した場合、以下のSlack通知処理が実行される
   Notify_succeed:
@@ -96,7 +97,7 @@ jobs:
         SLACK_TITLE: 'Success to Deploy to ECS :rocket:'
         SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
         SLACK_COLOR: '#5cb85c'
-        SLACK_MESSAGE: 'デプロイに成功しました。Run number : #${{ github.run_number }}'
+        SLACK_MESSAGE: 'デプロイしました。Run number : #${{ github.run_number }}'
   
   # 上記までの処理のいずれかが失敗した場合、以下のSlack通知処理が実行される
   Notify_failure:
@@ -112,4 +113,4 @@ jobs:
         SLACK_TITLE: 'Failure to Deploy to ECS :boom:'
         SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
         SLACK_COLOR: '#dc143c'
-        SLACK_MESSAGE: 'デプロイに失敗しました。Run number : #${{ github.run_number }}'
+        SLACK_MESSAGE: 'デプロイできませんでした。Run number : #${{ github.run_number }}'
