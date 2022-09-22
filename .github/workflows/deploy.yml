@@ -20,12 +20,6 @@ permissions:
 jobs:
   Test:
     uses: ./.github/workflows/test.yml
-    # outputs:
-    #   done: ${{ steps.check.outputs.message }}
-    # steps:
-    # - id: check
-    #     if: ${{ always() }}
-    #     run: echo "::set-output name=message::Test ${{ (job.status == 'success' && '✅') || '❌' }}"
   
   Deploy:
     needs: [Test]
@@ -56,9 +50,9 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . -f Dockerfile.prod
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest . -f Dockerfile.prod
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:latest"
     
     - name: Rewrite the Amazon ECS task definition
       run: |
@@ -86,15 +80,13 @@ jobs:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
         service: ${{ env.ECS_SERVICE }}
         cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: false
-    # - id: check
-    #     if: ${{ always() }}
-    #     run: echo "::set-output name=message::Deploy ${{ (job.status == 'success' && '✅') || '❌' }}"
+        wait-for-service-stability: true
 
   # 上記までの処理が成功した場合、以下のSlack通知処理が実行される
   Notify_succeed:
     if: success()
     runs-on: ubuntu-latest
+    needs: [Deploy]
     steps:
     - name: Slack Notification Success
       uses: rtCamp/action-slack-notify@v2.0.0
@@ -110,6 +102,7 @@ jobs:
   Notify_failure:
     if: failure()
     runs-on: ubuntu-latest
+    needs: [Deploy]
     steps:
     - name: Slack Notification Failure
       uses: rtCamp/action-slack-notify@v2.0.0
@@ -120,19 +113,3 @@ jobs:
         SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
         SLACK_COLOR: '#dc143c'
         SLACK_MESSAGE: 'デプロイに失敗しました。Run number : #${{ github.run_number }}'
-  
-  # 上記までの処理のいずれかが中止した場合、以下のSlack通知処理が実行される
-  # Notify_failure:
-  #   if: cancelled()
-  #   runs-on: ubuntu-latest
-  #   needs: [Test, Deploy]
-  #   steps:
-  #   - name: Slack Notification Cancell
-  #     uses: rtCamp/action-slack-notify@v2.0.0
-  #     env:
-  #       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-  #       SLACK_USERNAME: GitHub Actions
-  #       SLACK_TITLE: 'Cancell to Deploy to ECS :boom:'
-  #       SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-  #       SLACK_COLOR: '#dc143c'
-  #       SLACK_MESSAGE: '${{ needs.Test.outputs.done }} ${{ needs.Deploy.outputs.done }}'
