@@ -95,6 +95,7 @@ jobs:
   Notify_succeed:
     if: success()
     runs-on: ubuntu-latest
+    needs: [Deploy]
     steps:
     - name: Slack Notification Success
       uses: rtCamp/action-slack-notify@v2.0.0
@@ -110,6 +111,7 @@ jobs:
   Notify_failure:
     if: failure()
     runs-on: ubuntu-latest
+    needs: [Deploy]
     steps:
     - name: Slack Notification Failure
       uses: rtCamp/action-slack-notify@v2.0.0
