@@ -1,0 +1,130 @@
+name: Test
+on:
+  push:
+    # デプロイ用のWorkflowから、テスト用のWorkflowを呼び出す
+    branches-ignore:
+      - "master/**"
+  workflow_call:
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+    outputs:
+      done: ${{ steps.check.outputs.message }}
+
+    services:
+      db:
+        image: postgres:12
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: teaparty_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    container:
+      image: ruby:3.1.1
+    env:
+      RAILS_ENV: 'test'
+      POSTGRES_PASSWORD: password
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install chrome
+        run: |
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+          echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' | tee /etc/apt/sources.list.d/google-chrome.list
+          apt update -y
+          apt install -y google-chrome-stable
+      - name: bundler config
+        run: bundle config set path 'vendor/bundle'
+      - name: cache gems
+        id: cache-gems
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      - name: setup bundle
+        if: steps.cache-gems.outputs.cache-hit != 'true'
+        run: |
+          bundle install --jobs 4 --retry 3
+      - name: setup db schema
+        run: |
+          bundle exec rails db:create db:schema:load --trace
+      - name: run spec
+        run: bundle exec rspec
+      - name: Archive rspec result screenshots
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: rspec result screenshots
+          path: |
+            tmp/screenshots/
+            tmp/capybara/
+      - id: check
+        if: ${{ always() }}
+        run: echo "::set-output name=message::RSpec ${{ (job.status == 'success' && '✅') || '❌' }}"
+
+  rubocop:
+    runs-on: ubuntu-latest
+    outputs:
+      done: ${{ steps.check.outputs.message }}
+    container:
+      image: ruby:3.1.1
+    steps:
+      - uses: actions/checkout@v3
+      - name: bundler config
+        run: bundle config set path 'vendor/bundle'
+      - name: Cache gems
+        id: cache-gems
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      - name: setup bundle
+        if: steps.cache-gems.outputs.cache-hit != 'true'
+        run: bundle install --jobs 4 --retry 3
+      - name: run rubocop
+        run: bundle exec rubocop
+      - id: check
+        if: ${{ always() }}
+        run: echo "::set-output name=message::RuboCop ${{ (job.status == 'success' && '✅') || '❌' }}"
+
+  # # 上記までの処理が成功した場合、以下のSlack通知処理が実行される
+  # Notify_succeed:
+  #   if: success()
+  #   runs-on: ubuntu-latest
+  #   needs: [RSpec, RuboCop]
+  #   steps:
+  #   - name: Slack Notification Success
+  #     uses: rtCamp/action-slack-notify@v2.0.0
+  #     env:
+  #       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  #       SLACK_USERNAME: GitHub Actions
+  #       SLACK_TITLE: 'Success to Deploy to GitHub Pages :rocket:'
+  #       SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+  #       SLACK_COLOR: '#5cb85c'
+  #       SLACK_MESSAGE: '${{ needs.RSpec.outputs.done }} ${{ needs.RuboCop.outputs.done }}'
+  
+  # # 上記までの処理のいずれかが失敗した場合、以下のSlack通知処理が実行される
+  # Notify_failure:
+  #   if: failure()
+  #   runs-on: ubuntu-latest
+  #   needs: [RSpec, RuboCop]
+  #   steps:
+  #   - name: Slack Notification Failure
+  #     uses: rtCamp/action-slack-notify@v2.0.0
+  #     env:
+  #       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  #       SLACK_USERNAME: GitHub Actions
+  #       SLACK_TITLE: 'Failure to Deploy to GitHub Pages :boom:'
+  #       SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+  #       SLACK_COLOR: '#dc143c'
+  #       SLACK_MESSAGE: '${{ needs.RSpec.outputs.done }} ${{ needs.RuboCop.outputs.done }}'
+

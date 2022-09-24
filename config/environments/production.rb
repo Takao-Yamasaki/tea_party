@@ -15,7 +15,7 @@ Rails.application.configure do
   # Full error reports are disabled and caching is turned on.
   
   # 本番環境で故意にエラーを表示させるときに、trueとする
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local       = true
   config.action_controller.perform_caching = true
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
@@ -121,5 +121,8 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
   # herokuへのデプロイ
-  config.hosts << "tearip.herokuapp.com"
+  # config.hosts << "tearip.herokuapp.com"
+  
+  # ホワイトリストをクリア
+  config.hosts.clear
 end
