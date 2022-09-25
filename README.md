@@ -1,6 +1,7 @@
 # Tearip（ティリップ）
 - 茶摘み体験に特化した予約サービスです。
 - URL: https://tearip.com/
+
 ## 画面のイメージ
 ![top](https://user-images.githubusercontent.com/24619682/192131108-eee7a8dd-dea3-4e77-aa8f-7341cd8b6e44.jpeg)
 
@@ -77,9 +78,7 @@
 | likes                          | 体験への「いいね！」の情報                    | 
 | maps                           | 体験場所の緯度経度の情報                      | 
 | reviews                        | 体験へのレビューの情報                        | 
-| active_storage_attachments     | ファイルアップロード（Active Storage）の情報  | 
-| active_storage_blobs           | ファイルアップロード（Active Storage）の情報  | 
-| active_storage_variant_records | ファイルアップロード（Active Storage）の情報  | 
+
 ## 苦慮した点
 - Rails`6.0`系から`7.0`系へのアップグレード
     - 当初の開発時点では`6.0`系で開発していたのですが、当初の開発から期間が空いてしまったので、バージョンアップをする必要が出てきました。`6.0.3.4`→`6.1.6.1`→`7.0`へのバージョンアップを順次行なっていたのですが、`7.0`系から`Webpacker`が廃止されたため、移行するのに苦慮し、断念しました。今回の`7.0`系へのアップグレードについては、開発を進めるに当たって、絶対的な要件ではないため、今後の課題としたいです。
