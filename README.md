@@ -47,22 +47,25 @@
     - draw.io
 
 ## 使い方
-1.画面右上の「ログイン」からテストユーザでログイン  
-2.体験一覧ページから予約したい体験をクリック  
-3.体験詳細ページから「予約する」をクリック  
+1. 画面右上のバーガーメニューを開き、「ゲストログイン」を押下し、ゲストユーザでログイン  
+2. 体験一覧ページから予約したい体験をクリック  
+3. 体験詳細ページから「予約する」をクリック  
 
 ## インストール
     $ git clone https://github.com/Takao-Yamasaki/tea_party
     $ cd tea_party
-    $ docker-compose -f docker-compose-prod.yml up -d
+    $ docker-compose up -d
+    $ docker-compose exec web bash
+    $ rails db:create
+    $ rails db:seed
 
 ## インフラ構成図
 ![infra_portfolio ](https://user-images.githubusercontent.com/24619682/192122047-765730f3-8da2-4090-9b89-f5e40bad9a25.jpg)
 ### 開発環境・本番環境について
 開発環境に`Docker`,`docker-compose`を使用しており、以下のコンテナを使用しています。
-- Webサーバーのコンテナ: Nginx
-- アプリケーションのコンテナ: Ruby,Ruby on Rails
-- DBのコンテナ: PostgreSQL(開発環境)
+- Webコンテナ: Nginx
+- アプリケーションコンテナ: Ruby,Ruby on Rails
+- DBコンテナ: PostgreSQL(開発環境)
 ### SSL証明書の発行について
 - SSL証明を発行して、HTTPS化を実現するため、`ACM`と`ALB`を導入することにしました。
 - ALBを使用していますが、現状では負荷分散やスケールアウトするほどのアクセスは見込まれないため、ECSのタスクは１つのみ稼働させています。
@@ -91,7 +94,7 @@
     - `GitHub Actions`を使用するのが初めてだったので、yamlファイルの記載方法に悩まされました。また、自動デプロイに当たっては、`IAM`の権限関係でエラーになることが多かったので、IAMの適切な権限設定についても、今後理解を深めていきたいです。
 ## 今後の実装予定
 - Rails7系へのバージョンアップ
-- 管理画面の実装
+- 主催者（ホスト）がユーザーが予約したお茶摘み体験を管理するための管理画面の実装
 - 開発環境用と本番環境用の`Dockerfile`,`docker-compose.yml`を統合
     - Dockerの設計思想は、`開発環境と本番環境の差異をできるだけなくす`ことなので、開発環境と本番環境とでできるだけ差異があってはならず、複数ファイルをメンテナンスしないといけないので、管理が煩雑になるのを防ぐため、統合したいです。
     - 開発環境用: `Dockerfile`,`docker-compose.yml`
