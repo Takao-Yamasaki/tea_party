@@ -29,7 +29,7 @@ Tearipは、旅行者に楽しみながら茶摘みをしてもらい、「お�
         - CD: ECR/ECSへの自動デプロイ、デプロイ完了後にSlackへ通知
     - Docker(20.10.17)/docker-compose(2.10.2)
     - Nginx(1.23.1)
-    - Postgres
+    - PostgreSQL
     - AWS(ECS(Fargate)/ALB/ACM/S3/RDS/Route53/CloudWatch/VPC/IAM)
 - その他使用ツール
     - Visual Studio Code
@@ -54,8 +54,8 @@ Tearipは、旅行者に楽しみながら茶摘みをしてもらい、「お�
 - アプリケーションのコンテナ: Ruby/Ruby on Rails
 - DBのコンテナ: PostgreSQL(開発環境のみ)
 ### SSL証明書の発行について
-SSL証明を発行して、HTTPS化を実現するため、`ACM`を使用しました。ACMを使用するため、ALBを導入することにしました。
-ALBを使用していますが、現状では負荷分散やスケールアウトするほどのアクセスは見込まれないた、ECSのタスクは１つだけで稼働させています。
+- SSL証明を発行して、HTTPS化を実現するため、`ACM`を使用しました。ACMを使用するため、`ALB`を導入することにしました。
+- `ALB`を使用していますが、現状では負荷分散やスケールアウトするほどのアクセスは見込まれないため、ECSのタスクは１つだけで稼働させています。
 ## DB設計
 ### ER図
 ### 各テーブルについて
