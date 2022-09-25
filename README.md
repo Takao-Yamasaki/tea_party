@@ -4,9 +4,9 @@ URL: https://tearip.com/
 ## 画面のイメージ
 ![top](https://user-images.githubusercontent.com/24619682/192131108-eee7a8dd-dea3-4e77-aa8f-7341cd8b6e44.jpeg)
 ## アプリの概要
-日本では、平地で機械摘みしている茶園が多いですが、なかには、傾斜地で手摘みしている茶園もあります。  
+日本では、平地で機械摘みしている茶園が多いですが、中には、傾斜地で手摘みしている茶園もあります。  
 手摘みは、芽を見ながら、人の手で行われるので、とても時間と労力が掛かります。  
-Tearipは、旅行者に楽しみながら茶摘みをしてもらい、「お茶ファン」となってもらうことを目的とした、茶摘み体験に特化した予約サービスです。
+Tearip（ティリップ）は、旅行者に楽しみながら茶摘みをしてもらい、「お茶ファン」となってもらうことを目的とした、茶摘み体験に特化した予約サービスです。
 
 ## アプリの機能
 - 体験検索機能（ransack）
@@ -20,18 +20,18 @@ Tearipは、旅行者に楽しみながら茶摘みをしてもらい、「お�
 - ページネーション機能（kaminari）
 ## 使用技術
 - フロントエンド
-    - HTML/CSS/Sass/Bootstrap
+    - HTML,CSS,Sass,Bootstrap
 - バックエンド
     - Ruby(`2.6.5`→`3.1.1`)
     - Rails(`6.0.3.4`→`6.1.6.1`)
 - インフラ
     - GitHub Actions(CI/CD)
-        - CI: Rubocop/RSpecを使った自動テスト
-        - CD: ECR/ECSへの自動デプロイ、デプロイ完了後にSlackへ通知
-    - Docker(20.10.17)/docker-compose(2.10.2)
+        - CI: Rubocop,RSpecを使った自動テスト
+        - CD: ECR,ECSへの自動デプロイ、デプロイ完了後にSlackへ通知
+    - Docker(20.10.17),docker-compose(2.10.2)
     - Nginx(1.23.1)
     - PostgreSQL
-    - AWS(ECS(Fargate)/ALB/ACM/S3/RDS/Route53/CloudWatch/VPC/IAM)
+    - AWS(ECS(Fargate),ALB,ACM,S3,RDS,Route53,CloudWatch,VPC,IAM)
 - その他使用ツール
     - Visual Studio Code
     - Slack
@@ -50,13 +50,13 @@ Tearipは、旅行者に楽しみながら茶摘みをしてもらい、「お�
 ## インフラ構成図
 ![infra_portfolio ](https://user-images.githubusercontent.com/24619682/192122047-765730f3-8da2-4090-9b89-f5e40bad9a25.jpg)
 ### 開発環境・本番環境について
-開発環境に`Docker/docker-compose`を使用しており、以下のコンテナを使用しています。
+開発環境に`Docker`,`docker-compose`を使用しており、以下のコンテナを使用しています。
 - Webサーバーのコンテナ: Nginx
-- アプリケーションのコンテナ: Ruby/Ruby on Rails
-- DBのコンテナ: PostgreSQL(開発環境のみ)
+- アプリケーションのコンテナ: Ruby,Ruby on Rails
+- DBのコンテナ: PostgreSQL(開発環境)
 ### SSL証明書の発行について
-- SSL証明を発行して、HTTPS化を実現するため、`ACM`を使用しました。ACMを使用するため、`ALB`を導入することにしました。
-- `ALB`を使用していますが、現状では負荷分散やスケールアウトするほどのアクセスは見込まれないため、ECSのタスクは１つだけで稼働させています。
+- SSL証明を発行して、HTTPS化を実現するため、`ACM`を使用し、`ACM`を使用するため、`ALB`を導入することにしました。
+- `ALB`を使用していますが、現状では負荷分散やスケールアウトするほどのアクセスは見込まれないため、ECSのタスクは１つのみ稼働させています。
 ## DB設計
 ### ER図
 ```mermaid
@@ -165,17 +165,18 @@ active_storage_variant_records {
 }
 ```
 
-### 各テーブルについて
-| テーブル名                 | 説明                                          | 
-| -------------------------- | --------------------------------------------- | 
-| users                      | 登録ユーザーの情報                            | 
-| experiences                | 体験の情報                                    | 
-| bookings                   | 予約の情報                                    | 
-| likes                      | 体験への「いいね！」の情報                    | 
-| maps                       | 体験場所の緯度経度の情報                      | 
-| reviews                    | 体験へのレビューの情報                        | 
-| active_storage_attachments | ファイルアップロード（Active Storage）の情報  | 
-
+### テーブルの説明
+| テーブル名                     | 説明                                          | 
+| ------------------------------ | --------------------------------------------- | 
+| users                          | 登録ユーザーの情報                            | 
+| experiences                    | 体験の情報                                    | 
+| bookings                       | 予約の情報                                    | 
+| likes                          | 体験への「いいね！」の情報                    | 
+| maps                           | 体験場所の緯度経度の情報                      | 
+| reviews                        | 体験へのレビューの情報                        | 
+| active_storage_attachments     | ファイルアップロード（Active Storage）の情報  | 
+| active_storage_blobs           | ファイルアップロード（Active Storage）の情報  | 
+| active_storage_variant_records | ファイルアップロード（Active Storage）の情報  | 
 ## 苦慮した点
 - Rails`6.0`系から`7.0`系へのアップグレード
     - 当初の開発時点では`6.0`系で開発していたのですが、当初の開発から期間が空いてしまったので、バージョンアップをする必要が出てきました。`6.0.3.4`→`6.1.6.1`→`7.0`へのバージョンアップを順次行なっていたのですが、`7.0`系から`Webpacker`が廃止されたため、移行するのに苦慮し、断念しました。今回の`7.0`系へのアップグレードについては、開発を進めるに当たって、絶対的な要件ではないため、今後の課題としたいです。
@@ -189,9 +190,9 @@ active_storage_variant_records {
 ## 今後の実装予定
 - Rails7系へのバージョンアップ
 - 管理画面の実装
-- 開発環境用と本番環境用の`Dockerfile`及び`docker-compose.yml`を統合
+- 開発環境用と本番環境用の`Dockerfile`,`docker-compose.yml`を統合
     - Dockerの設計思想は、`開発環境と本番環境の差異をできるだけなくす`ことなので、開発環境と本番環境とでできるだけ差異があってはならず、複数ファイルをメンテナンスしないといけないので、管理が煩雑になるのを防ぐため、統合したいです。
-    - 開発環境用: `Dockerfile` / `docker-compose.yml`
-    - 本番環境用: `Dockerfile.prod` / `Dockerfile.nginx` / `docker-compose-prod.yml`
+    - 開発環境用: `Dockerfile`,`docker-compose.yml`
+    - 本番環境用: `Dockerfile.prod`,`Dockerfile.nginx`,`docker-compose-prod.yml`
 - Rspecを使ったテストコードの追加
 - レスポンシブデザインの実装  
