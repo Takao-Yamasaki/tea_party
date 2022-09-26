@@ -27,6 +27,9 @@
 - 認証機能（devise）  
 - 画像投稿機能（S3,carrierwave）
 - ページネーション機能（kaminari）
+- SEO対策
+    - `Google Analytics`の導入
+    - metaタグの設定（meta-tags）
 ## 使用技術
 - フロントエンド
     - HTML,CSS,Scss,Bootstrap
