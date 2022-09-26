@@ -2,6 +2,7 @@ class DropHosts < ActiveRecord::Migration[6.1]
   def up
     drop_table :hosts
   end
+
   def down
     cleate_table :hosts do |t|
       t.string :first_name
