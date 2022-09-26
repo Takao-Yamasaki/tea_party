@@ -1,12 +1,21 @@
 # Tearip（ティリップ）
-茶摘み体験に特化した予約サービスです。
-URL: https://tearip.com/
+- 茶摘み体験に特化した予約サービスです。
+- URL: https://tearip.com/
+
 ## 画面のイメージ
 ![top](https://user-images.githubusercontent.com/24619682/192131108-eee7a8dd-dea3-4e77-aa8f-7341cd8b6e44.jpeg)
+
 ## アプリの概要
-日本では、平地で機械摘みしている茶園が多いですが、中には、傾斜地で手摘みしている茶園もあります。  
-手摘みは、芽を見ながら、人の手で行われるので、とても時間と労力が掛かります。  
-Tearip（ティリップ）は、旅行者に楽しみながら茶摘みをしてもらい、「お茶ファン」となってもらうことを目的とした、茶摘み体験に特化した予約サービスです。
+- 日本では、平地で機械摘みしている茶園が多いですが、中には、傾斜地で手摘みしている茶園もあります。  
+- 手摘みは、芽を見ながら、人の手で行われるので、とても時間と労力が掛かります。  
+- Tearip（ティリップ）は、旅行者に楽しみながら茶摘みをしてもらい、「お茶ファン」となってもらうことを目的とした、茶摘み体験に特化した予約サービスです。
+
+## アプリ開発の背景
+- 前職の公務員時代に、和紅茶（国産紅茶）の振興に携わっていました。
+- その際に、お茶生産者の茶摘み作業のお手伝いをした経験がありました。
+- 平坦な土地に植えてあるチャノキについては、機械で茶摘みを行うのですが、山奥の急傾斜地に植えてあるチャノキについては、機械が入らないので、熟練の職人方（パートのおばちゃんたち）が「一枝二葉」で丁寧に時間を掛けて手摘みを行なっているという現状がありました。
+- そのなかで、茶摘み作業は、天候と茶葉の生育状況を考慮しつつ、１日単位で収穫するタイミングが変わるため、常に労働力不足という課題を抱えていました。
+- そこで、お茶生産者とお茶積み体験に興味がある人とをマッチングし、お茶摘みを体験することで、単なる労働力不足の解消だけでなく、「お茶ファン」を拡大し、お茶の消費量の増大に少しでも貢献できるのではないかと考え、このアプリを開発しました。
 
 ## アプリの機能
 - 体験検索機能（ransack）
@@ -18,9 +27,12 @@ Tearip（ティリップ）は、旅行者に楽しみながら茶摘みをし�
 - 認証機能（devise）  
 - 画像投稿機能（S3,carrierwave）
 - ページネーション機能（kaminari）
+- SEO対策
+    - `Google Analytics`の導入
+    - metaタグの設定（meta-tags）
 ## 使用技術
 - フロントエンド
-    - HTML,CSS,Sass,Bootstrap
+    - HTML,CSS,Scss,Bootstrap
 - バックエンド
     - Ruby(`2.6.5`→`3.1.1`)
     - Rails(`6.0.3.4`→`6.1.6.1`)
@@ -38,146 +50,41 @@ Tearip（ティリップ）は、旅行者に楽しみながら茶摘みをし�
     - draw.io
 
 ## 使い方
-1.画面右上の「ログイン」からテストユーザでログイン  
-2.体験一覧ページから予約したい体験をクリック  
-3.体験詳細ページから「予約する」をクリック  
+1. 画面右上のバーガーメニューを開き、「ゲストログイン」を押下し、ゲストユーザでログイン  
+2. 体験一覧ページから予約したい体験をクリック  
+3. 体験詳細ページから「予約する」をクリック  
 
 ## インストール
     $ git clone https://github.com/Takao-Yamasaki/tea_party
     $ cd tea_party
-    $ docker-compose -f docker-compose-prod.yml up -d
+    $ docker-compose up -d
+    $ docker-compose exec web bash
+    $ rails db:create
+    $ rails db:seed
 
 ## インフラ構成図
 ![infra_portfolio ](https://user-images.githubusercontent.com/24619682/192122047-765730f3-8da2-4090-9b89-f5e40bad9a25.jpg)
 ### 開発環境・本番環境について
 開発環境に`Docker`,`docker-compose`を使用しており、以下のコンテナを使用しています。
-- Webサーバーのコンテナ: Nginx
-- アプリケーションのコンテナ: Ruby,Ruby on Rails
-- DBのコンテナ: PostgreSQL(開発環境)
+- Webコンテナ: Nginx
+- アプリケーションコンテナ: Ruby,Ruby on Rails
+- DBコンテナ: PostgreSQL(開発環境)
 ### SSL証明書の発行について
-- SSL証明を発行して、HTTPS化を実現するため、`ACM`を使用し、`ACM`を使用するため、`ALB`を導入することにしました。
-- `ALB`を使用していますが、現状では負荷分散やスケールアウトするほどのアクセスは見込まれないため、ECSのタスクは１つのみ稼働させています。
+- SSL証明を発行して、HTTPS化を実現するため、`ACM`と`ALB`を導入することにしました。
+- ALBを使用していますが、現状では負荷分散やスケールアウトするほどのアクセスは見込まれないため、ECSのタスクは１つのみ稼働させています。
 ## DB設計
 ### ER図
-```mermaid
-erDiagram
-
-users ||--o{ experiences: ""
-users ||--|{ bookings: ""
-experiences ||--|{ bookings: ""
-users ||--|{ likes: ""
-experiences ||--|{ likes: ""
-users ||--|{ reviews: ""
-experiences ||--|{ reviews: ""
-
-users {
-    string name
-    string email
-    string encrypted_password
-    string reset_password_token
-    string reset_password_sent_at
-    datetime remember_created_at
-    datetime created_at
-    datetime updated_at
-    string first_name
-    string last_name
-    text image
-}
-
-experiences {
-    string title
-    integer fee
-    string prefecture
-    string region
-    text content
-    datetime start_datetime
-    datetime finish_datetime
-    string language
-    datetime created_at
-    datetime updated_at
-    text image
-    string address
-    float latitude
-    float longitude
-    bigint user_id
-}
-
-bookings {
-    bigint user_id
-    bigint experience_id
-    datetime created_at
-    datetime updated_at
-    index experience_id
-    index user_id
-}
-
-likes {
-    bigint user_id
-    bigint experience_id
-    datetime created_at
-    datetime updated_at
-    index experience_id
-    index user_id
-    index user_id
-}
-
-maps {
-    string address
-    float latitude
-    float longitude
-    datetime created_at
-    datetime updated_at
-}
-
-reviews {
-    bigint user_id
-    bigint experience_id
-    string content
-    integer rating
-    datetime created_at
-    datetime updated_at
-    index experience_id
-    index user_id
-}
-
-active_storage_attachments {
-    string name
-    string record_type
-    bigint record_id
-    bigint blob_id
-    datetime created_at
-}
-
-active_storage_blobs {
-    string key
-    string filename
-    string content_type
-    text metadata
-    string service_name
-    bigint byte_size
-    string checksum
-    datetime created_at
-}
-
-active_storage_variant_records {
-    bigint blob_id
-    string variation_digest
-}
-```
-
+![portfolio drawio](https://user-images.githubusercontent.com/24619682/192176303-52be68a8-72c7-4ba7-bbd3-58c3db7d811d.png)
 ### テーブルの説明
 | テーブル名                     | 説明                                          | 
 | ------------------------------ | --------------------------------------------- | 
-| users                          | 登録ユーザーの情報                            | 
-| experiences                    | 体験の情報                                    | 
-| bookings                       | 予約の情報                                    | 
-| likes                          | 体験への「いいね！」の情報                    | 
-| maps                           | 体験場所の緯度経度の情報                      | 
-| reviews                        | 体験へのレビューの情報                        | 
-| active_storage_attachments     | ファイルアップロード（Active Storage）の情報  | 
-| active_storage_blobs           | ファイルアップロード（Active Storage）の情報  | 
-| active_storage_variant_records | ファイルアップロード（Active Storage）の情報  | 
-## 苦慮した点
+| Users                          | 登録ユーザーの情報                            | 
+| Experiences                    | お茶摘み体験の情報                                    | 
+| Bookings                       | お茶摘み体験の予約情報                                    | 
+| Likes                          | お茶摘み体験への「いいね！」の情報                    | 
+| Reviews                        | お茶摘み体験へのレビューの情報                        | 
+
+## 苦労したところ
 - Rails`6.0`系から`7.0`系へのアップグレード
     - 当初の開発時点では`6.0`系で開発していたのですが、当初の開発から期間が空いてしまったので、バージョンアップをする必要が出てきました。`6.0.3.4`→`6.1.6.1`→`7.0`へのバージョンアップを順次行なっていたのですが、`7.0`系から`Webpacker`が廃止されたため、移行するのに苦慮し、断念しました。今回の`7.0`系へのアップグレードについては、開発を進めるに当たって、絶対的な要件ではないため、今後の課題としたいです。
 - 本番環境用のDockerfileの作成
@@ -189,7 +96,7 @@ active_storage_variant_records {
     - `GitHub Actions`を使用するのが初めてだったので、yamlファイルの記載方法に悩まされました。また、自動デプロイに当たっては、`IAM`の権限関係でエラーになることが多かったので、IAMの適切な権限設定についても、今後理解を深めていきたいです。
 ## 今後の実装予定
 - Rails7系へのバージョンアップ
-- 管理画面の実装
+- 主催者（ホスト）がユーザーが予約したお茶摘み体験を管理するための管理画面の実装
 - 開発環境用と本番環境用の`Dockerfile`,`docker-compose.yml`を統合
     - Dockerの設計思想は、`開発環境と本番環境の差異をできるだけなくす`ことなので、開発環境と本番環境とでできるだけ差異があってはならず、複数ファイルをメンテナンスしないといけないので、管理が煩雑になるのを防ぐため、統合したいです。
     - 開発環境用: `Dockerfile`,`docker-compose.yml`
