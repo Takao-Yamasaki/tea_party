@@ -9,6 +9,12 @@
     <%= javascript_pack_tag 'application' %>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <%= favicon_link_tag('favicon.jpg') %>
+    <%# 本番環境のみGAタグを表示 %>
+    <% if Rails.env.production? %>
+      <%= render 'layouts/google_analytics' %>
+    <% end %>
+    <%# メタタグの出力 %>
+    <%= display_meta_tags(default_meta_tags) %>
   </head>
 
   <body>
