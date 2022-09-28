@@ -74,7 +74,7 @@
 - ALBを使用していますが、現状では負荷分散やスケールアウトするほどのアクセスは見込まれないため、ECSのタスクは１つのみ稼働させています。
 ## DB設計
 ### ER図
-![table_portfolio](https://user-images.githubusercontent.com/24619682/192781919-0a7f8816-7e6d-446f-bf02-e88cd915aa33.jpg)
+![er_portfolio](https://user-images.githubusercontent.com/24619682/192903736-c0a55a2f-2662-400f-aaf3-00436f7ccae7.jpg)
 ### テーブルの説明
 | テーブル名                     | 説明                                          | 
 | ------------------------------ | --------------------------------------------- | 
