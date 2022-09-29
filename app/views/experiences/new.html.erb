@@ -20,7 +20,59 @@
       </div>
       <div class="form-group col-md-12">
         <label for="InputAddress">住所</label>
-        <%= f.text_field :address, class: "form-control", id: "InputAddress", placeholder: "住所" %>
+        <%= f.text_field :address, class: "form-control", id: "address", placeholder: "住所", value: "熊本市" %>
+        <input type="button" value="場所を検索" onclick="codeAddress()">
+        
+        <%= f.hidden_field :latitude, class: "form-control", id: "latitude", placeholder: "緯度" %>
+        <%= f.hidden_field :longitude, class: "form-control", id: "longitude", placeholder: "経度" %>
+
+        <div id='map'></div>
+        
+        <style>
+          #map {
+            height: 400px;
+          }
+        </style>
+
+        <script>
+
+        let map
+
+        function initMap() {
+          geocoder = new google.maps.Geocoder()
+
+          map = new google.maps.Map(document.getElementById('map'), {
+            center: {
+                lat: 32.8032459,
+                lng: 130.7079996
+            },
+            zoom: 15
+          });
+        }
+        let geocorder
+        function codeAddress() {
+          let inputAddress = document.getElementById('address').value;
+
+          geocoder.geocode({
+            'address': inputAddress
+          }, function (results, status) {
+            if (status == 'OK') {              
+              map.setCenter(results[0].geometry.location);
+              var marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location
+              });
+            
+            document.getElementById('latitude').value = results[0].geometry.location.lat();
+            document.getElementById('longitude').value = results[0].geometry.location.lng();
+
+            } else {
+              alert('該当する結果がありませんでした：' + status);
+            }
+          });
+        }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeO6xn5fNT67yK0PGW_emEonxmpdeiYf8&callback=initMap" async defer></script>
       </div>
       <div class="form-group col-md-12">
         <label for="InputContent">内容</label>
