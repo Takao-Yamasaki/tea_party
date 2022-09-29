@@ -1,10 +1,62 @@
-<p>更新</p>
+<h1>更新</h1>
 <%= form_with model: @experience, url:"/experiences/#{@experience.id}", method: :patch, local: true do |f| %>
   <p>タイトル：<%= f.text_field :title %></p>
   <p>料金：<%= f.text_field :fee %></p>
   <p>都道府県：<%= f.text_field :prefecture %></p>
-  <p>地方：<%= f.collection_select :region, Region.all, :name, :name, include_blank: "選択してください" %></p>
-  <p>住所：<%= f.text_field :address %></p>
+  <p>地方：<%= f.text_field :region %></p>
+  <p>住所：<%= f.text_field :address, id: "address" %></p>
+  <p><%= f.text_field :latitude, class: "form-control", id: "latitude", placeholder: "緯度" %></p>
+  <p><%= f.text_field :longitude, class: "form-control", id: "longitude", placeholder: "経度" %></p>
+  <input type="button" value="場所を検索" onclick="codeAddress()">
+        
+
+        <p><div id='map'></div></p>
+        
+        <style>
+          #map {
+            height: 400px;
+          }
+        </style>
+
+        <script>
+
+        let map
+
+        function initMap() {
+          geocoder = new google.maps.Geocoder()
+
+          map = new google.maps.Map(document.getElementById('map'), {
+            center: {
+                lat: 32.8032459,
+                lng: 130.7079996
+            },
+            zoom: 15
+          });
+        }
+        let geocorder
+        function codeAddress() {
+          let inputAddress = document.getElementById('address').value;
+
+          geocoder.geocode({
+            'address': inputAddress
+          }, function (results, status) {
+            if (status == 'OK') {              
+              map.setCenter(results[0].geometry.location);
+              var marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location
+              });
+            
+            document.getElementById('latitude').value = results[0].geometry.location.lat();
+            document.getElementById('longitude').value = results[0].geometry.location.lng();
+
+            } else {
+              alert('該当する結果がありませんでした：' + status);
+            }
+          });
+        }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeO6xn5fNT67yK0PGW_emEonxmpdeiYf8&callback=initMap" async defer></script>
   <p>内容：<%= f.text_area :content %></p>
   <p>開始日時：<%= f.datetime_field :start_datetime %></p>
   <p>終了日時：<%= f.datetime_field :finish_datetime %></p>
