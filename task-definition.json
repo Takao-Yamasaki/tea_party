@@ -43,6 +43,10 @@
           "value": "SED_DB_PASSWORD"
         },
         {
+          "name": "GOOGLEMAP",
+          "value": "SED_GOOGLEMAP"
+        },
+        {
           "name": "RAILS_ENV",
           "value": "SED_RAILS_ENV"
         },
