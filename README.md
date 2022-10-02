@@ -18,18 +18,20 @@
 - そこで、お茶生産者とお茶摘み体験に興味がある人とをマッチングし、お茶摘みを体験することで、単なる労働力不足の解消だけでなく、「お茶ファン」を拡大し、お茶の消費量の増大に少しでも貢献できるのではないかと考え、このアプリを開発しました。
 
 ## アプリの機能
-- 体験検索機能（ransack）
+- 体験検索機能（`ransack`）
 - 体験予約機能
 - 体験投稿機能
 - お気に入り登録機能（非同期処理）
-- GoogleMap表示機能（GoogleMap API）  
-- 体験にコメントを付ける機能（raty）
-- 認証機能（devise）  
-- 画像投稿機能（S3,carrierwave）
-- ページネーション機能（kaminari）
-- SEO対策
-    - `Google Analytics`の導入
-    - metaタグの設定（meta-tags）
+- GoogleMap表示機能（`GoogleMap API`）  
+- 体験にコメントを付ける機能（`raty`）
+- 認証機能（`devise`）  
+- 画像投稿機能（`S3`,`carrierwave`）
+- ページネーション機能（`kaminari`）
+- その他
+    - SEO対策
+        - `Google Analytics`の導入
+        - metaタグの設定（meta-tags）
+    - デバッグツール（`pry-rails`）
 ## 使用技術
 - フロントエンド
     - HTML,CSS,Scss,Bootstrap
