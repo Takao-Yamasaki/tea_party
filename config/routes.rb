@@ -18,6 +18,4 @@ Rails.application.routes.draw do
     resources :bookings
     resources :reviews, only: [:new, :create]
   end
-  resources :hosts
-  resources :maps, only: [:index]
 end

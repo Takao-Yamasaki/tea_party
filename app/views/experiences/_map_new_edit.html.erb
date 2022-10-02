@@ -1,0 +1,55 @@
+<p><div id='map'></div></p>
+
+<style>
+  #map {
+    height: 400px;
+  }
+</style>
+
+<script>
+
+const latitude_elm = document.getElementById('latitude');
+const longitude_elm = document.getElementById('longitude');
+// デフォルトの座標は、熊本市の座標
+const default_lat = 32.8032459;
+const default_lng = 130.7079996;
+
+let map
+let latitude = latitude_elm.value == "" ? default_lat : parseFloat(latitude_elm.value);
+let longitude = longitude_elm.value == "" ? default_lng : parseFloat(longitude_elm.value);
+
+function initMap() {
+  geocoder = new google.maps.Geocoder()
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {
+        lat: latitude,
+        lng: longitude
+    },
+    zoom: 15
+  });
+}
+let geocorder
+function codeAddress() {
+  let inputAddress = document.getElementById('address').value;
+
+  geocoder.geocode({
+    'address': inputAddress
+  }, function (results, status) {
+    if (status == 'OK') {              
+      map.setCenter(results[0].geometry.location);
+      var marker = new google.maps.Marker({
+        map: map,
+        position: results[0].geometry.location
+      });
+    
+    latitude_elm.value = results[0].geometry.location.lat();
+    longitude_elm.value = results[0].geometry.location.lng();
+
+    } else {
+      alert('該当する結果がありませんでした：' + status);
+    }
+  });
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<%=ENV['GOOGLEMAP']%>&callback=initMap" async defer></script>
