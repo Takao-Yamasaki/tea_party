@@ -91,36 +91,7 @@
       </div>
     </div>
   </div>
-
-  <%# 口コミ機能 %>
-  <div class="border-top py-4">
-    <h3>
-      <%# 星表示 %>
-        <%= image_tag(asset_path('star-on.png')) %>
-      <%# 平均点 %>
-      <%= @experience.reviews.average(:rating).to_f.round(2) %>
-      <%# 口コミ件数 %>
-      (<%= @experience.reviews.count %>件のレビュー)
-    </h3>
-
-    <% @reviews.each do |review| %>
-      <div class="card my-4 rounded">
-        <div class="card-body"> 
-          <p><%= review.user.first_name %>&nbsp;<%= review.user.last_name %></p>
-          <p><%= review.content %></p>
-        <%# 星評価 %>
-        <div id="star-rate-<%= review.id %>"></div>
-          <script>
-          $('#star-rate-<%= review.id %>').raty({
-            size: 36,
-            starOff:  '<%= asset_path('star-off.png') %>',
-            starOn : '<%= asset_path('star-on.png') %>',
-            readOnly: true,
-            score: <%= review.rating %>,
-          });
-          </script> 
-        </div>
-      </div> 
-    <% end %>
-  </div>
+  
+  <%# レビューの入力と表示 %>
+  <%= render partial: "reviews" %>
 </div>
