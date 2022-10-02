@@ -5,8 +5,8 @@ class ReviewsController < ApplicationController
   end
 
   def create
-    Review.create(review_params)
-    redirect_to controller: :experiences, action: :index
+    review = Review.create(review_params)
+    redirect_to controller: :experiences, action: :show, id: review.experience_id
   end
 
   private
