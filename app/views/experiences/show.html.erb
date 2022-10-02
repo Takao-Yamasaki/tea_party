@@ -1,25 +1,29 @@
 <div class="container">
   <div class="card border-0" style="width: 800px">
-    <% #お気に入り機能 %>
-    <p id="experience-<%= @experience.id %>", class="text-right">
-    <% if @experience.liked_by?(current_user) %>
-      <%= render partial: "like", experience: @experience %>
-    <% else %>
-      <%= render partial: "dislike", experience: @experience %>
+    <%# 編集リンク %>
+    <% if @experience.user.id == current_user.id  %>
+      <p class="text-right"><%= link_to "編集", edit_experience_path(params[:id]) %></p>
     <% end %>
+    <p id="experience-<%= @experience.id %>", class="text-right">
+      <%# お気に入り機能 %>
+      <% if @experience.liked_by?(current_user) %>
+        <%= render partial: "like", experience: @experience %>
+      <% else %>
+        <%= render partial: "dislike", experience: @experience %>
+      <% end %>
     </p>
-    <% #イメージ画像 %>
+    <%# イメージ画像 %>
     <p><%= image_tag @experience.image.url, size: '800x500', class: "rounded" %></p>
     <h2 class="card-title">
       <%= @experience.title %>
     </h2>
     <div class="card-body">
       <div class="card-text">
-      <% #星表示 %>
+      <%# 星表示 %>
           <%= image_tag(asset_path('star-on.png')) %>
-      <% #平均点 %>
+      <%# 平均点 %>
       <%= @experience.reviews.average(:rating).to_f.round(2) %>
-      <% #口コミ件数 %>
+      <%# 口コミ件数 %>
       (<%= @experience.reviews.count %>).
       <%= @experience.prefecture %>
     </div>
@@ -53,19 +57,19 @@
         </div>
     </div>
   </div>
-    <% #体験できること %>
+    <%# 体験できること %>
     <div class="border-top my-4 py-4">
       <h3>体験できること</h3>
       <p><%= @experience.content %><p>
     </div>
 
-    <% #地図の表示 %>
+    <%# 地図の表示 %>
     <div class="border-top my-4 py-4">  
         <h3>実施場所</h3>
-        <%= render partial: "map", class: "rounded" %>
+        <%= render partial: "map_show", class: "rounded" %>
     </div>
 
-  <% #予約機能 %>
+  <%# 予約機能 %>
   <div class="border-top my-4  py-4">
     <h3>予約可能な日付から選択する</h3>
     <div class="card rounded" style="width: 18rem">
@@ -88,14 +92,14 @@
     </div>
   </div>
 
-  <% #口コミ機能 %>
+  <%# 口コミ機能 %>
   <div class="border-top py-4">
     <h3>
-      <% #星表示 %>
+      <%# 星表示 %>
         <%= image_tag(asset_path('star-on.png')) %>
-      <% #平均点 %>
+      <%# 平均点 %>
       <%= @experience.reviews.average(:rating).to_f.round(2) %>
-      <% #口コミ件数 %>
+      <%# 口コミ件数 %>
       (<%= @experience.reviews.count %>件のレビュー)
     </h3>
 
@@ -104,7 +108,7 @@
         <div class="card-body"> 
           <p><%= review.user.first_name %>&nbsp;<%= review.user.last_name %></p>
           <p><%= review.content %></p>
-        <!--星評価-->
+        <%# 星評価 %>
         <div id="star-rate-<%= review.id %>"></div>
           <script>
           $('#star-rate-<%= review.id %>').raty({

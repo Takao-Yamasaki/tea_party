@@ -35,7 +35,7 @@ class ExperiencesController < ApplicationController
   def update
     experience = Experience.find(params[:id])
     experience.update(experience_params)
-    redirect_to action: :index
+    redirect_to action: :show
   end
 
   def destroy
@@ -46,6 +46,6 @@ class ExperiencesController < ApplicationController
 
   private
   def experience_params
-    params.require(:experience).permit(:title, :fee, :prefecture, :region, :address, :content, :start_datetime, :finish_datetime, :language, :image)
+    params.require(:experience).permit(:title, :fee, :prefecture, :region, :address, :latitude, :longitude, :content, :start_datetime, :finish_datetime, :language, :image)
   end
 end
