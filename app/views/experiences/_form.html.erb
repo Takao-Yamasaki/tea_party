@@ -2,23 +2,23 @@
     <div class="form-row">
       <div class="form-group col-md-12">
         <label for="inputTitle">タイトル</label>
-        <%= f.text_field :title, class: "form-control", id: "inputTitle", placeholder: "タイトル" %>
+        <%= f.text_field :title, class: "form-control", id: "inputTitle", placeholder: "例: 【熊本県】楽しい和紅茶摘み体験" %>
       </div>
       <div class="form-group col-md-12">
         <label for="inputFee">料金</label>
-        <%= f.text_field :fee, class: "form-control", id: "inputFee", placeholder: "料金" %>
+        <%= f.text_field :fee, class: "form-control", id: "inputFee", placeholder: "例: 10000" %>
       </div>
       <div class="form-group col-md-12">
         <label for="InputPrefecture">都道府県</label>
-        <%= f.text_field :prefecture, class: "form-control", id: "InputPrefecture", placeholder: "都道府県" %>
+        <%= f.text_field :prefecture, class: "form-control", id: "InputPrefecture", placeholder: "例: 熊本県" %>
       </div>
       <div class="form-group col-md-12">
         <label for="InputRegion">地方</label>
-        <%= f.text_field :region, class: "form-control", id: "InputRegion", placeholder: "地方" %>
+        <%= f.text_field :region, class: "form-control", id: "InputRegion", placeholder: "例: 熊本市" %>
       </div>
       <div class="form-group col-md-12">
         <label for="InputAddress">住所</label>
-        <%= f.text_field :address, class: "form-control", id: "address", placeholder: "住所" %>
+        <%= f.text_field :address, class: "form-control", id: "address", placeholder: "例: 熊本県熊本市手取本町１番１号" %>
         <input type="button" value="場所を検索" onclick="codeAddress()">
         <%# GoogleMapを表示 %>
         <%= f.hidden_field :latitude, class: "form-control", id: "latitude" %>
@@ -27,7 +27,7 @@
       </div>
       <div class="form-group col-md-12">
         <label for="InputContent">内容</label>
-        <%= f.text_area :content, class: "form-control", id: "InputContent", placeholder: "内容" %></p>
+        <%= f.text_area :content, class: "form-control", id: "InputContent", placeholder: "例: 熊本県は和紅茶発祥の地。始まりの地で、楽しい和紅茶摘み体験をしよう。" %></p>
       </div>
       <div class="form-group col-md-12">
         <label for="InputStartDatetime">開始日時</label>
@@ -39,7 +39,7 @@
       </div>
       <div class="form-group col-md-12">
         <label for="InputLanguage">ガイド言語</label>
-        <%= f.text_field :language, class: "form-control", id: "InputLanguage", placeholder: "ガイド言語" %>
+        <%= f.text_field :language, class: "form-control", id: "InputLanguage", placeholder: "例: 日本語" %>
       </div>
       <div class="form-group col-md-12">
         <label for="InputImage">画像</label>
