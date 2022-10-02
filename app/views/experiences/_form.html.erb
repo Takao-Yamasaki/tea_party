@@ -21,8 +21,8 @@
         <%= f.text_field :address, class: "form-control", id: "address", placeholder: "住所" %>
         <input type="button" value="場所を検索" onclick="codeAddress()">
         <%# GoogleMapを表示 %>
-        <%= f.hidden_field :latitude, class: "form-control", id: "latitude", placeholder: "緯度" %>
-        <%= f.hidden_field :longitude, class: "form-control", id: "longitude", placeholder: "経度" %>
+        <%= f.hidden_field :latitude, class: "form-control", id: "latitude" %>
+        <%= f.hidden_field :longitude, class: "form-control", id: "longitude" %>
         <%= render partial: "map_new_edit" %>
       </div>
       <div class="form-group col-md-12">
