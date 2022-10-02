@@ -20,6 +20,6 @@ CarrierWave.configure do |config|
     # 開発環境
     config.storage = :file
     # test時に処理をスキップ
-    config.enabled_processing = false if Rails.env.test?
+    # config.enabled_processing = false if Rails.env.test?
   end
 end
