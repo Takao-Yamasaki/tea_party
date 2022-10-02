@@ -35,7 +35,7 @@ class ExperiencesController < ApplicationController
   def update
     experience = Experience.find(params[:id])
     experience.update(experience_params)
-    redirect_to action: :index
+    redirect_to action: :show
   end
 
   def destroy
