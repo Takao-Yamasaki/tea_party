@@ -1,5 +1,7 @@
 <h1>体験をホストする</h1>
 <%= form_with model: @experience, class: "card col-md-6", local: true do |f| %>
+    <%# エラーメッセージの表示 %>
+    <%= render 'layouts/error_messages', model: f.object %>
     <%= render partial: "form", locals: {f: f} %>
     <%= f.submit "掲載をはじめる", class:"btn btn-success" %>
   </div>

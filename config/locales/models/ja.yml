@@ -1,0 +1,18 @@
+ja:
+  activerecord:
+    models:
+      experience: 体験
+    attributes:
+      experience:
+        title: タイトル
+        fee: 料金
+        prefecture: 都道府県名
+        region: 地方
+        content: 内容
+        start_datetime: 開始日時
+        finish_datetime: 終了日時
+        language: ガイド言語
+        address: 住所
+        latitude: 緯度
+        longitude: 経度
+        
