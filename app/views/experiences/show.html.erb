@@ -71,7 +71,11 @@
 
   <%# 予約機能 %>
   <div class="border-top my-4  py-4">
-    <h3>予約可能な日付から選択する</h3>
+    <% if Booking.where(user_id: current_user.id, experience_id: params[:id]).any? %>
+      <h3>予約済みの体験</h3>
+    <% else %>
+      <h3>予約可能な日付から選択する</h3>
+    <% end %>
     <div class="card rounded" style="width: 18rem">
       <div class="card-body">
         <h5 class="card-title">
