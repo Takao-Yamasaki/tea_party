@@ -1,9 +1,0 @@
-<p>更新</p>
-<%= form_with model: @host, url: "/hosts/#{@host.id}", method: :patch, local: true do |f| %>
-  <p>姓：<%= f.text_field :first_name %></p>
-  <p>名：<%= f.text_field :last_name %></p>
-  <p>email：<%= f.text_field :email %></p>
-  <p>画像：<%= f.text_field :image_url %></p>
-  <p>パスワード：<%= f.text_field :password %></p>
-  <%= f.submit "登録" %>
-<% end %>
