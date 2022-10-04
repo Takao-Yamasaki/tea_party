@@ -42,9 +42,11 @@
         <%= f.text_field :language, class: "form-control", id: "InputLanguage", placeholder: "例: 日本語", maxlength: "10" %>
       </div>
       <div class="form-group col-md-12">
-        <label for="InputImage">画像</label>
-        <% if @experience.image.url.present? %>
-          <%= image_tag(@experience.image.url, size: "600x400", alt: "体験画像") %>
+        <label for="InputImage">画像</label><br>
+        <% if @experience.image.present? %>
+          <%= image_tag(@experience.image.url, size: "600x400") %>
+        <% else %>
+          <%= image_tag('default_image_experiences.png', size: "600x400")%>
         <% end %>
         <%= f.file_field :image, class: "form-control-file", id: "InputImage" %>
       </div>
