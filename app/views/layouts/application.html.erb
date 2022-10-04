@@ -23,7 +23,13 @@
     </header>
     <main>
       <div class="base-container">
-         <%= yield %>
+        <%# メッセージの表示 %>
+        <% flash.each do |key, value| %>
+          <p class="alert alert-<%= key %>">
+          <%= value %>
+        <% end %>
+        </div>
+        <%= yield %>
       </div>
     </main>
     <footer>
