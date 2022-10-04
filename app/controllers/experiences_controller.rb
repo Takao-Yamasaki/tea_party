@@ -8,7 +8,6 @@ class ExperiencesController < ApplicationController
     }
     @q = Experience.ransack(params[:q], search_option)
     @experiences = @q.result.page(params[:page]).page(params[:page]).per(PER_PAGE)
-    # @liked_experience_ids = current_user.likes.pluck(:experience_id)
   end
 
   def show
@@ -25,9 +24,10 @@ class ExperiencesController < ApplicationController
     @experience = Experience.new(experience_params)
     @experience.user_id = current_user.id
     if @experience.save
-      redirect_to action: :index
+      redirect_to action: :index, success: "登録が完了しました"
     else
-      render "new"
+      flash.now[:danger] = "登録に失敗しました"
+      render :new
     end
   end
 

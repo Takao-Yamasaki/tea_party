@@ -13,7 +13,11 @@
       <% end %>
     </p>
     <%# イメージ画像 %>
-    <p><%= image_tag @experience.image.url, size: '800x500', class: "rounded" %></p>
+    <% if @experience.image.present? %>
+      <p><%= image_tag @experience.image.url, size: '800x500', class: "rounded" %></p>
+    <% else %>
+      <p><%= image_tag('default_image_experiences.png', size: '800x500', class: "rounded") %></p>
+    <% end %>
     <h2 class="card-title">
       <%= @experience.title %>
     </h2>

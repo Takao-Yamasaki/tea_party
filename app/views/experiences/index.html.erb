@@ -17,7 +17,11 @@
         <% @experiences.each do |experience| %>
           <div class="card border-0 col-md-3" style="width: 18rem">
             <%= link_to(experience_path(experience),{class: "card-link"}) do %>
-                <%= image_tag experience.image.url, size: '400x250',class:"card-img-top rounded" %>
+                <% if experience.image.present? %>
+                  <%= image_tag experience.image.url, size: '400x250',class:"card-img-top rounded" %>
+                <% else %>
+                  <%= image_tag 'default_image_experiences.png', size: '400x250',class:"card-img-top rounded" %>
+                <% end %>
                 <div class="card-body">
                   <% #星表示 %>
                   <%= image_tag(asset_path('star-on.png')) %>
