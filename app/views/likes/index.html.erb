@@ -5,7 +5,11 @@
     <% @likes.each do |like| %>
       <div class="card border-0 col-lx" style="width: 21rem; margin: 10px">
         <%= link_to(experience_path(like.experience_id),{class: "card-link"}) do %>
-            <%= image_tag like.experience.image.url, size: '300x300',class:"card-img-top rounded" %>
+            <% if like.experience.image.present? %>
+              <%= image_tag like.experience.image.url, size: '300x300',class:"card-img-top rounded" %>
+            <% else %>
+              <%= image_tag 'default_image_experiences', size: '300x300',class:"card-img-top rounded" %>
+            <% end %>
             <div class="card-body">
               <% #星表示 %>
               <%= image_tag(asset_path('star-on.png')) %>
