@@ -5,7 +5,11 @@
     <% @bookings.each do |booking| %>
       <div class="card border-0 col-lx" style="width: 21rem; margin: 10px">
         <%= link_to(experience_path(booking.experience_id),{class: "card-link"}) do %>
-            <%= image_tag booking.experience.image.url, size: '300x300',class:"card-img-top rounded" %>
+            <% if booking.experience.image.present? %>
+              <%= image_tag booking.experience.image.url, size: '300x300',class:"card-img-top rounded" %>
+            <% else %>
+              <%= image_tag 'default_image_experiences',  size: '300x300',class:"card-img-top rounded"  %>
+            <% end %>
             <div class="card-body">
               <% #星表示 %>
               <%= image_tag(asset_path('star-on.png')) %>
