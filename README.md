@@ -1,6 +1,7 @@
 # Tearip（ティリップ）
 - 茶摘み体験に特化した予約サービスです。
 - URL: https://tearip.com/
+- GitHub: https://github.com/Takao-Yamasaki/tea_party
 
 ## 画面のイメージ
 ![top](https://user-images.githubusercontent.com/24619682/192131108-eee7a8dd-dea3-4e77-aa8f-7341cd8b6e44.jpeg)
