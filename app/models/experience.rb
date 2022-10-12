@@ -2,14 +2,23 @@ class Experience < ApplicationRecord
   belongs_to :user
   has_many :bookings, dependent: :destroy
   has_many :booking_users, through: :bookings, source: :user
-  # バリデーションと関連付け
   has_many :likes, dependent: :destroy
-  # experience.liked_usersでexperienceをいいねしているユーザの一覧を取得できる
   has_many :liked_users, through: :likes, source: :user
-  
   has_many :reviews, dependent: :destroy
-  
+
   mount_uploader :image, ImageUploader
+
+  validates :title, presence: true, length: {maximum: 30}
+  validates :fee, presence: true, length: {maximum: 10}
+  validates :prefecture, presence: true, length: {maximum: 10}
+  validates :region, presence: true, length: {maximum: 10}
+  validates :content, presence: true, length: {maximum: 100}
+  validates :start_datetime, presence: true
+  validates :finish_datetime, presence: true
+  validates :language, presence: true, length: {maximum: 10}
+  validates :address, presence: true, length: {maximum: 30}
+  validates :latitude, presence: true
+  validates :longitude, presence: true
 
   # geocoderの適用
   # :addressを登録した際にgeocoderが緯度経度ののカラムにも自動的に値を入れてくれる

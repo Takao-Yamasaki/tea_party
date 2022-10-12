@@ -13,7 +13,11 @@
       <% end %>
     </p>
     <%# イメージ画像 %>
-    <p><%= image_tag @experience.image.url, size: '800x500', class: "rounded" %></p>
+    <% if @experience.image.present? %>
+      <p><%= image_tag @experience.image.url, size: '800x500', class: "rounded" %></p>
+    <% else %>
+      <p><%= image_tag('default_image_experiences.png', size: '800x500', class: "rounded") %></p>
+    <% end %>
     <h2 class="card-title">
       <%= @experience.title %>
     </h2>
@@ -71,7 +75,11 @@
 
   <%# 予約機能 %>
   <div class="border-top my-4  py-4">
-    <h3>予約可能な日付から選択する</h3>
+    <% if Booking.where(user_id: current_user.id, experience_id: params[:id]).any? %>
+      <h3>予約済みの体験</h3>
+    <% else %>
+      <h3>予約可能な日付から選択する</h3>
+    <% end %>
     <div class="card rounded" style="width: 18rem">
       <div class="card-body">
         <h5 class="card-title">

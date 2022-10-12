@@ -1,16 +1,16 @@
 <nav class="navbar navbar-light bg-light fixed-top">
   <div class="col-3" >
-    <% #ロゴ %>
+    <%# ロゴ %>
     <%= link_to root_path, class: "navbar-brand" do %>
       Tearip
       <i class="fas fa-leaf"></i>
     <% end %>
   </div>
 
-  <% #検索窓 %>
+  <%# 検索窓 %>
   <div class="col-6">
     <div class="container">
-      <% if current_page?(root_path) %>
+      <% if %w[root experiences].any? { |name| current_page?(send("#{name}_path")) } %>
         <%= search_form_for(@q, {class: "form-horizonal"}) do |f| %>
           <div class="input-group input-group-lg">
             <%= f.search_field :prefecture_cont, class: "form-control", placeholder: "行き先はどちら？" %>
@@ -25,10 +25,8 @@
       <% end %>
     </div>
   </div>
-  <% #ユーザー画像 %>
-  <% #image_tag current_user.image.url %>
-
-  <% #ハンバーガーメニュー %>
+  
+  <%# ハンバーガーメニュー %>
   <div class="col-3">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="#navbarSupportedContent" aria-expand="false" aria-label="Toggle navigation" style="float:right">
       <span class="navbar-toggler-icon">

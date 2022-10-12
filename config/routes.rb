@@ -10,12 +10,13 @@ Rails.application.routes.draw do
   end
 
   resources :users do
-    resources :bookings
-    resources :likes
+    resources :bookings, only: [:index]
+    resources :likes, only: [:index]
   end
+
   resources :experiences do
-    resource :likes
-    resources :bookings
+    resource :likes, only: [:create, :destroy]
+    resources :bookings, only: [:index, :new, :create, :destroy]
     resources :reviews, only: [:new, :create]
   end
 end

@@ -1,24 +1,24 @@
 <div class="card-body">
     <div class="form-row">
       <div class="form-group col-md-12">
-        <label for="inputTitle">タイトル</label>
-        <%= f.text_field :title, class: "form-control", id: "inputTitle", placeholder: "タイトル" %>
+        <label for="inputTitle">タイトル <span class="badge badge-danger">必須</span></label>
+        <%= f.text_field :title, class: "form-control", id: "inputTitle", placeholder: "例: 【熊本県】楽しい和紅茶摘み体験", maxlength: "30" %>
       </div>
       <div class="form-group col-md-12">
-        <label for="inputFee">料金</label>
-        <%= f.text_field :fee, class: "form-control", id: "inputFee", placeholder: "料金" %>
+        <label for="inputFee">料金 <span class="badge badge-danger">必須</span></label>
+        <%= f.text_field :fee, class: "form-control", id: "inputFee", placeholder: "例: 10000", maxlength: "10" %>
       </div>
       <div class="form-group col-md-12">
-        <label for="InputPrefecture">都道府県</label>
-        <%= f.text_field :prefecture, class: "form-control", id: "InputPrefecture", placeholder: "都道府県" %>
+        <label for="InputPrefecture">都道府県 <span class="badge badge-danger">必須</span></label>
+        <%= f.text_field :prefecture, class: "form-control", id: "InputPrefecture", placeholder: "例: 熊本県", maxlength: "10" %>
       </div>
       <div class="form-group col-md-12">
-        <label for="InputRegion">地方</label>
-        <%= f.text_field :region, class: "form-control", id: "InputRegion", placeholder: "地方" %>
+        <label for="InputRegion">地方 <span class="badge badge-danger">必須</span></label>
+        <%= f.text_field :region, class: "form-control", id: "InputRegion", placeholder: "例: 熊本市", maxlength: "10" %>
       </div>
       <div class="form-group col-md-12">
-        <label for="InputAddress">住所</label>
-        <%= f.text_field :address, class: "form-control", id: "address", placeholder: "住所" %>
+        <label for="InputAddress">住所 <span class="badge badge-danger">必須</span></label>
+        <%= f.text_field :address, class: "form-control", id: "address", placeholder: "例: 熊本県熊本市手取本町１番１号", maxlength: "30" %>
         <input type="button" value="場所を検索" onclick="codeAddress()">
         <%# GoogleMapを表示 %>
         <%= f.hidden_field :latitude, class: "form-control", id: "latitude" %>
@@ -26,25 +26,27 @@
         <%= render partial: "map_new_edit" %>
       </div>
       <div class="form-group col-md-12">
-        <label for="InputContent">内容</label>
-        <%= f.text_area :content, class: "form-control", id: "InputContent", placeholder: "内容" %></p>
+        <label for="InputContent">内容 <span class="badge badge-danger">必須</span></label>
+        <%= f.text_area :content, class: "form-control", id: "InputContent", placeholder: "例: 熊本県は和紅茶発祥の地。始まりの地で、楽しい和紅茶摘み体験をしよう。", maxlength: "100" %></p>
       </div>
       <div class="form-group col-md-12">
-        <label for="InputStartDatetime">開始日時</label>
+        <label for="InputStartDatetime">開始日時 <span class="badge badge-danger">必須</span></label>
         <%= f.datetime_field :start_datetime, class: "form-control", id: "InputStartDatetime" %>
       </div>
       <div class="form-group col-md-12">
-        <label for="InputFinishDatetime">終了日時</label>
+        <label for="InputFinishDatetime">終了日時 <span class="badge badge-danger">必須</span></label>
         <%= f.datetime_field :finish_datetime, class: "form-control", id: "InputFinishDatetime" %>
       </div>
       <div class="form-group col-md-12">
-        <label for="InputLanguage">ガイド言語</label>
-        <%= f.text_field :language, class: "form-control", id: "InputLanguage", placeholder: "ガイド言語" %>
+        <label for="InputLanguage">ガイド言語 <span class="badge badge-danger">必須</span></label>
+        <%= f.text_field :language, class: "form-control", id: "InputLanguage", placeholder: "例: 日本語", maxlength: "10" %>
       </div>
       <div class="form-group col-md-12">
-        <label for="InputImage">画像</label>
-        <% if @experience.image.url.present? %>
-          <%= image_tag(@experience.image.url, size: "600x400", alt: "体験画像") %>
+        <label for="InputImage">画像</label><br>
+        <% if @experience.image.present? %>
+          <%= image_tag(@experience.image.url, size: "600x400") %>
+        <% else %>
+          <%= image_tag('default_image_experiences.png', size: "600x400")%>
         <% end %>
         <%= f.file_field :image, class: "form-control-file", id: "InputImage" %>
       </div>
